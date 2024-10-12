@@ -19,10 +19,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String name;
+    @Column(unique = true)
     private String email;
     private String password;
     private String telephone;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

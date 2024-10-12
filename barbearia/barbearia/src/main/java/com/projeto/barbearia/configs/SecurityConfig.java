@@ -19,17 +19,28 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final UserAuthenticationFilter userAuthenticationFilter;
 
-    public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {};
-    public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {};
-    public static final String[] ENDPOINTS_CUSTOMER = {};
-    public static final String[] ENDPOINTS_BARBEIRO = {};
-    public static final String[] ENDPOINTS_GERENTE = {};
+    public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
+            "/user/test"
+    };
+    public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
+            "/user",
+            "/user/login"
+    };
+    public static final String[] ENDPOINTS_CUSTOMER = {
+            "/user/test/customer"
+    };
+    public static final String[] ENDPOINTS_BARBEIRO = {
+            "/user/test/barbeiro"
+    };
+    public static final String[] ENDPOINTS_GERENTE = {
+            "/user/test/gerente"
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(
-                auth -> auth.requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
-                        .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
+                auth -> auth.requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
+                        .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
                         .requestMatchers(ENDPOINTS_CUSTOMER).hasRole("CUSTOMER")
                         .requestMatchers(ENDPOINTS_BARBEIRO).hasRole("BARBEIRO")
                         .requestMatchers(ENDPOINTS_GERENTE).hasRole("GERENTE")
@@ -37,7 +48,7 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(this.userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
