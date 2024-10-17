@@ -30,10 +30,19 @@ public class SecurityConfig {
             "/user/test/customer"
     };
     public static final String[] ENDPOINTS_BARBEIRO = {
-            "/user/test/barbeiro"
+            "/user/test/barbeiro",
+            "/disponibilidade/*"
     };
     public static final String[] ENDPOINTS_GERENTE = {
-            "/user/test/gerente"
+            "/user/test/gerente",
+            "/disponibilidade/*",
+            "/horario/*",
+            "/user/funcionario",
+            "/barbearia/*"
+    };
+    public static final String[] ENDPOINTS_GERENTE_BARBEIRO =  {
+            "/servico",
+            "/servico/{id}",
     };
 
     @Bean
@@ -44,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(ENDPOINTS_CUSTOMER).hasRole("CUSTOMER")
                         .requestMatchers(ENDPOINTS_BARBEIRO).hasRole("BARBEIRO")
                         .requestMatchers(ENDPOINTS_GERENTE).hasRole("GERENTE")
+                        .requestMatchers(ENDPOINTS_GERENTE_BARBEIRO).hasAnyRole("GERENTE", "BARBEIRO")
                         .anyRequest().denyAll()
                 )
                 .csrf(csrf -> csrf.disable())

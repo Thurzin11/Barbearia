@@ -40,8 +40,6 @@ public class UserService {
                 .email(userCreateDTO.email())
                 .password(this.securityConfig.passwordEncoder().encode(userCreateDTO.password()))
                 .roles(List.of(Role.builder().name(userCreateDTO.role()).build()))
-                .status(true)
-                .salario(1500.00)
                 .build();
 
         return this.userRepository.save(user);
