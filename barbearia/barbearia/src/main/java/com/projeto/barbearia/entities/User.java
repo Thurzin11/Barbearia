@@ -30,6 +30,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
+    private List<Disponibilidade> disponibilidade;
     private boolean status;
     private Double salario;
 }
